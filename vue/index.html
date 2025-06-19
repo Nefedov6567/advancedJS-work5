@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Интернет-магазин на Vue.js</title>
+  <style>
+    
+     .goods-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .goods-item {
+      border: 1px solid #ccc;
+      padding: 15px;
+      width: 200px;
+      text-align: center;
+    }
+
+    .goods-item h3 {
+      margin: 0 0 10px;
+    }
+
+    .goods-item button {
+      padding: 5px 10px;
+    }
+
+    #cart-block {
+      margin-top: 30px;
+    
+    }
+
+   
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <!-- Поле поиска с двусторонней привязкой -->
+    <header>
+      <input type="text" v-model="searchLine" class="goods-search" />
+      <button v-on:click="filterGoods" class="search-button" type="button">Искать</button>
+    </header>
+
+    <h1>Каталог товаров</h1>
+
+    <!-- Список товаров, каждый с уникальным ключом -->
+    <div class="goods-list">
+      <div
+        class="goods-item"
+        v-for="good in filteredGoods"
+        v-bind:key="good.id_product"
+      >
+        <h3>{{ good.product_name }}</h3>
+        <p>{{ good.price }}₽</p>
+        <!-- При клике добавляем товар в корзину -->
+        <button v-on:click="addToCart(good)">Купить</button>
+      </div>
+    </div>
+
+    <!-- Корзина -->
+    <div id="cart-block">
+      <h2>Корзина</h2>
+
+      <!-- Если корзина пустая -->
+      <p v-if="cart.length === 0">Корзина пуста</p>
+
+      <!-- Иначе показываем товары -->
+      <div v-else>
+        <p v-for="(item, index) in cart" v-bind:key="index">
+          {{ item.product_name }} — {{ item.price }}₽
+          <!-- Кнопка удаления товара из корзины -->
+          <button v-on:click="removeFromCart(index)">Удалить</button>
+        </p>
+        <!-- Итоговая сумма -->
+        <p><strong>Итого: {{ totalPrice }}₽</strong></p>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+  <script src="main.js"></script>
+</body>
+
+</html>
